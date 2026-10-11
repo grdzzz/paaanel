@@ -1,0 +1,114 @@
+/*
+
+*/
+ 
+body {
+    text-align: center;
+    background-color: #F5F0E8;
+    font-family: 'DM Sans', sans-serif;
+    width: 80%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+ul {
+    padding-left: 0px;
+}
+
+ul li {
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 15px;
+    list-style-type: none;
+    transition: transform 0.3s ease;
+    position: relative;
+}
+section#pendientes ul li {
+    color: #D97777;
+    border: #B8323C 7px solid;
+}
+
+section#completadas ul li {
+    color: #3d3d3d;
+    border: #5c5c5c 7px solid;
+}
+
+ul li:hover {
+    transform: scale(110%);
+    cursor: pointer;
+}
+
+form {
+    padding: 0px;
+    margin: 0 auto;
+    background-color: #C7D2C0;
+    border-radius: 15px;
+    border: #34312F solid 10px;
+    color: #34312F;
+    font-family: 'DM Sans', sans-serif;
+}
+form .rad {
+    background-color: #C7D2C0;
+    padding: 5px;
+    margin-bottom: 10px;
+
+}
+form input, form select {
+    border-radius: 5px;
+    border: 2px #34312F solid;
+}
+
+form input#sub {
+    padding: 10px;
+    background-color: #4F6F52;
+    color: #F5F0E8;
+    font-size: 110%;
+    transition: transform 0.3s ease;
+    margin-bottom: 20px;
+}
+
+form input#sub:hover {
+    transform: scale(110%);
+}
+
+.linea {
+    border-bottom: #34312F dotted 4px;
+}
+
+button {
+    padding: 10px 10px;
+    text-align: center;
+    border: 0;
+    border-radius: 10px;
+    font-weight: bold;
+    position: absolute;
+    top: 0;
+    margin: 5px;
+}
+
+button.btn-borrar {
+    background-color: lightcoral;
+    right: 0;
+}
+
+button.btn-calendario{
+    background-color: lightgreen;
+    left: 0;
+}
+
+button {
+  transition: 
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    filter 0.3s ease;
+}
+
+button:hover, button:focus-visible {
+  box-shadow: 0 0px 30px rgba(0, 0, 0, 0.3);
+  filter: brightness(1.2);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  button:hover, button:focus-visible {
+    transform: scale(1.1);
+  }
+}

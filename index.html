@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de tareas</title>
+    <link rel="stylesheet" href="panel.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=DM+Sans:regular,500,700">
+</head>
+
+<body>
+    <h1>Panel de tareas</h1>
+    <form>
+        <h3>Insertar tarea nueva:</h3>
+        <label for="nb">Nombre de la tarea</label><br>
+        <input type="text" id="nb" class="rad" required><br>
+        <label for="as">Asignatura</label><br>
+        <select name="form" id="as" class="rad">
+            <option value="ha">Hardware</option>
+            <option value="so">S.O.</option>
+            <option value="of">Ofimàtica</option>
+            <option value="xa">Xarxes</option>
+            <option value="ip">IPO</option>
+            <option value="di">Digitalització</option>
+            <option value="pr">Programació</option>
+            <option value="an">Anglès</option>
+            <option value="sost">Sostenibilitat</option>
+            <option value="tu">Tutoria</option>
+        </select><br>
+        <label for="fe">Fecha de entrega</label><br>
+        <input type="date" lang="es-ES" id="fe" class="rad" required><br>
+        <input type="submit" value="Enviar" id="sub">
+    </form>
+    <section id="pendientes">
+        <h2 class="linea">Tareas pendientes</h2>
+        <ul>
+        </ul>
+    </section>
+    <section id="completadas">
+        <h2 class="linea">Tareas completadas</h2>
+        <ul>
+        </ul>
+    </section>
+<script src="https://accounts.google.com/gsi/client" defer></script>
+<script src="app.js"></script>
+</body>
+
+</html>
+
+
+
+<!--
+
+-->
