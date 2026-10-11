@@ -17,7 +17,7 @@ function dibujar() {
   listaCompletadas.replaceChildren();
 
   tareas.sort(function (a, b) {
-    return a.fecha.localeCompare(b.fecha);
+    return (a.fecha + 'T' + (a.hora || '00:00')).localeCompare(b.fecha + 'T' + (b.hora || '00:00'));
   });
 
   tareas.forEach(function (tarea) {
@@ -25,7 +25,8 @@ function dibujar() {
     const li = document.createElement('li');
     const negrita = document.createElement('strong');
     negrita.textContent = tarea.nombre;
-    li.append(negrita, ', ' + tarea.asignatura + ', ' + formatearFecha(tarea.fecha));
+    li.append(negrita, ', ' + tarea.asignatura + ', ' + formatearFecha(tarea.fecha) + (tarea.hora ? ', ' + tarea.hora : ''));
+
     const borrar = document.createElement('button');
     borrar.textContent = '✕';
     borrar.addEventListener('click', function (evento) {
@@ -70,6 +71,7 @@ formulario.addEventListener('submit', function (evento) {
     nombre: document.querySelector('#nb').value,
     asignatura: select.options[select.selectedIndex].text,
     fecha: document.querySelector('#fe').value,
+    hora: document.querySelector('#ho').value,
     completada: false
   });
 
@@ -88,10 +90,23 @@ let accessToken = null;
 let tareaEnEspera = null;
 
 async function crearEvento(tarea) {
-  // En eventos de todo el día, Google pide como "fin" el día siguiente
-  const siguiente = new Date(tarea.fecha + 'T00:00');
-  siguiente.setDate(siguiente.getDate() + 1);
-  const fin = siguiente.toLocaleDateString('sv-SE'); // da el formato 2026-10-14
+  let inicio;
+  let fin;
+
+  if (tarea.hora) {
+    // Evento con hora: dura 1 hora
+    const zona = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const comienzo = new Date(tarea.fecha + 'T' + tarea.hora);
+    const final = new Date(comienzo.getTime() + 60 * 60 * 1000);
+    inicio = { dateTime: tarea.fecha + 'T' + tarea.hora + ':00', timeZone: zona };
+    fin = { dateTime: final.toLocaleString('sv-SE').replace(' ', 'T'), timeZone: zona };
+  } else {
+    // Evento de todo el día: Google pide como "fin" el día siguiente
+    const siguiente = new Date(tarea.fecha + 'T00:00');
+    siguiente.setDate(siguiente.getDate() + 1);
+    inicio = { date: tarea.fecha };
+    fin = { date: siguiente.toLocaleDateString('sv-SE') };
+  }
 
   const respuesta = await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', {
     method: 'POST',
@@ -101,16 +116,18 @@ async function crearEvento(tarea) {
     },
     body: JSON.stringify({
       summary: tarea.nombre + ' (' + tarea.asignatura + ')',
-      start: { date: tarea.fecha },
-      end: { date: fin },
+      start: inicio,
+      end: fin,
       colorId: '5'
     })
   });
 
   if (respuesta.ok) {
     alert('Evento creado en tu Google Calendar ✅');
-  } else {
+  } else if (respuesta.status === 401) {
     accessToken = null;
+    alert('La sesión con Google ha caducado. Pulsa 📅 otra vez para renovarla.');
+  } else {
     alert('No se pudo crear el evento. Inténtalo de nuevo.');
   }
 }
